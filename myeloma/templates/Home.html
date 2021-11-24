@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> TITLE </title>
+</head>
+<body>
+    <h1 align = "center"> Hello Myeloma</h1>
+    <p>Matter</p>
+    <form action = "" method = "post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
+    {% if img_obj %}
+    <h3>Uploaded_Image</h3>
+    <!-- {{img_obj1}} = {{img_obj}} -->
+    <!-- <p> {{ img_obj.image.url}} </p> -->
+    <img src="{{ img_obj.image.url }}" alt="connect" style="max-height:300px">
+    {% endif %}
+
+    
+    <!-- {% if flag %}
+    <img src = "{{ img_obj.image.url }}" alt="connect" style="max-height:300px">
+    {% endif %} -->
+
+    <form action=""  method="get" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input id="button" type="submit" name="button" value="enter">
+        <!-- {{ form.as_p }} -->
+        <!-- <input type="file" name="avatar" accept="image/gif, image/jpeg, image/png"> -->
+        <!-- <button type="submit">submit</button> -->
+    </form>
+
+    <!-- {% if img_obj %}
+    <!-- {{img_obj1}} = {{img_obj}} -->
+    <!-- <h3>Uploaded_Image : {{img_obj1.image.url}}</h3> -->
+    <!-- <p> {{ img_obj.image.url}} </p>  -->
+    <!-- <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px"> -->
+    <!-- {% endif %} -->
+
+    <!-- <% import os %>
+    <% from BTP.settings import MEDIA_DIR, MEDIA_ROOT %>
+    <% from datetime import datetime %>
+    <% dirname = datetime.now().strftime('%Y.%m.%d.%H.%M.%S') #2010.08.09.12.08.45  %>
+    <% os.mkdir(os.path.join(MEDIA_ROOT, dirname)) %> -->
+
+    <script>
+       const fs = require('fs');
+
+        if(document.getElementById('button').clicked == true){
+            fs.copyFile( 'img_obj.image.url', 'output_folder', (err) => {
+                if (err) throw err;
+                console.log('File was copied to destination');
+            });
+            // <img src = "{{ img_obj.image.url }}" alt="connect" style="max-height:300px"/>
+        }
+    </script>
+
+</body>
+</html>
