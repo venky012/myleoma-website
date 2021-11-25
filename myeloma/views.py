@@ -19,21 +19,17 @@ import glob
 
 
 def image_upload_view(request):
-
+    
     # delete files
     path = MEDIA_DIR.replace('\\','/')
     try:
-        shutil.rmtree(path + 'folder-1/')
-        shutil.rmtree(path + 'folder-2/')
+        print(os.path.exists(path))
+        if os.path.exists(path):
+            shutil.rmtree(path)
     finally:
-        try:
-            os.mkdir(path+'folder-1')
-        finally:
-            pass
-        try:
-           os.mkdir(path+'folder-2')
-        finally:
-            pass
+        os.mkdir(path)
+        os.mkdir(path+'folder-1')
+        os.mkdir(path+'folder-2')
 
     # get files and do the processing
     if request.method == 'POST':
