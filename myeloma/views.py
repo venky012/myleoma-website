@@ -9,16 +9,33 @@ from BTP.settings import MEDIA_DIR, MEDIA_ROOT
 #     return render(req, 'Home.html')
 
 
-
+from .models import UploadImage
 from .forms import UploadForm
 import shutil
+import cv2
+import matplotlib.pyplot as plt
+import os
+import glob
 
 
 def image_upload_view(request):
-    """Process images uploaded by users"""
-    # output_folder = os.mkdir(MEDIA_ROOT + '/folder-2')
-    # output_folder = MEDIA_ROOT + '/folder-2'
-    
+
+    # delete files
+    path = MEDIA_DIR.replace('\\','/')
+    try:
+        shutil.rmtree(path + 'folder-1/')
+        shutil.rmtree(path + 'folder-2/')
+    finally:
+        try:
+            os.mkdir(path+'folder-1')
+        finally:
+            pass
+        try:
+           os.mkdir(path+'folder-2')
+        finally:
+            pass
+
+    # get files and do the processing
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         
@@ -26,15 +43,24 @@ def image_upload_view(request):
             form.save()
             # Get the current instance object to display in the template
             img_obj = form.instance
-            # if path.exists("img_obj.image"):
-            #     src = path.realpath("img_obj.image")
-            #     shutil.copy2(src , output_folder)  'output_folder': output_folder, 'flag': True
-            context =  {'form': form, 'img_obj': img_obj }
+            final = None
+
+            ##############################################################
+            
+            # model operations
+            # print(type(img_obj),img_obj.image)
+            # print(cv2.imread(MEDIA_DIR+str(img_obj.image)))
+
+            ##############################################################
+            if img_obj.image:
+                src = MEDIA_DIR + str(img_obj.image)
+                final = "/media/" + str(img_obj.image).replace("folder-1","folder-2")
+                shutil.copy2(src,  MEDIA_DIR + 'folder-2')
+            context =  {'form': form, 'original': img_obj , 'predicted':final,'media_dir':MEDIA_DIR}
             return render(request, 'Home.html',context)
     else:
         form = UploadForm()
     return render(request, 'Home.html', {'form': form})
-# Create your views here.
 
 
 def index(request):
@@ -53,39 +79,3 @@ def index(request):
         else:
             form = UploadForm()
         return render(request, 'Home.html', {'form': form})
-    
-    # path = settings.MEDIA_ROOT
-    # form = FolderForm(request.POST, request.FILES)
-    # img_obj1 = form.instance
-    # img_folder = os.mkdir(MEDIA_ROOT + '/folder-2')
-    # context = {'form': form, 'img_folder': img_folder, 'img_obj1': img_obj1}
-    # return render(request, "Home.html", context)
-
-# def image_upload_new_folder_view(request):
-#     """Process images uploaded by users"""
-#     if request.method == 'POST':
-#         form = FolderForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             # Get the current instance object to display in the template
-#             img_obj1 = form.instance
-#             return render(request, 'Home.html', {'form': form, 'img_obj': img_obj1})
-#     else:
-#         form = UploadForm()
-#     return render(request, 'Home.html', {'form': form})
-
-
-# def process_view(request):
-#     form = UploadForm(request.POST, request.FILES)
-#     img_obj = form.instance
-#     dirname = os.path.join(MEDIA_DIR, '/folder-2')  
-#     os.mkdir(dirname)
-#     shutil.copy(img_obj, dirname)
-#     return render(request, 'Home.html', {'form': form, 'dirname': dirname})
-
-
-
-# src = 'img_obj.image.url'
-# dest = 'MEDIA_ROOT'
-
-    # return render(request, 'Home.html', src)

@@ -2,60 +2,104 @@
 <html>
 <head>
     <title> TITLE </title>
+    <style>
+        .image-div{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .images{
+            /* border:1px solid black; */
+            flex-basis: 20%;
+            margin:50px;
+        }
+    </style>
 </head>
 <body>
-    <h1 align = "center"> Hello Myeloma</h1>
-    <p>Matter</p>
-    <form action = "" method = "post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
-
-    {% if img_obj %}
-    <h3>Uploaded_Image</h3>
-    <!-- {{img_obj1}} = {{img_obj}} -->
-    <!-- <p> {{ img_obj.image.url}} </p> -->
-    <img src="{{ img_obj.image.url }}" alt="connect" style="max-height:300px">
-    {% endif %}
-
+    <h1 style="text-align:center"> Hello Myeloma</h1>
+    <div class="container" style="height:100px">
+        <p>Matter</p>
+    </div>
     
-    <!-- {% if flag %}
-    <img src = "{{ img_obj.image.url }}" alt="connect" style="max-height:300px">
-    {% endif %} -->
-
-    <form action=""  method="get" enctype="multipart/form-data">
+    <div class="image-div">
+        {% if original %}
+            <div class="images">
+                <h4>Original Image</h4>
+                <img src="{{ original.image.url }}" alt="{{ original.image.url }}" style="max-height:300px" id="original_image">
+            </div>
+        {% else %}
+            <div class="images">
+                <h4 id="original-heading" style="display: none;">Original Image</h4>
+                <img id="preview_img"  style="max-height:300px"/>
+            </div>
+        {% endif %}
+        {% if predicted %}
+            <div class="images">
+                <h4>Predicted Image</h4>
+                <img src="{{ predicted }}" alt="{{ predicted }}" style="max-height:300px" id="predicted_image">
+            </div>
+        {% endif %}
+    </div>
+    <form class="image-div" method = "post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input id="button" type="submit" name="button" value="enter">
         <!-- {{ form.as_p }} -->
-        <!-- <input type="file" name="avatar" accept="image/gif, image/jpeg, image/png"> -->
-        <!-- <button type="submit">submit</button> -->
+        <input type="file" name="image" accept="image/*" onchange="loadFile(event)">
+        {% if predicted %}
+            <button type="submit" class="btn-danger process-btn">Reset</button>
+        {% else %}
+            <button type="submit" class="btn-primary process-btn">Process</button>
+        {% endif %}
+        <!-- <input id="media_dir" type="text" style="display: none;" value="{{ media_dir }}" /> -->
     </form>
-
-    <!-- {% if img_obj %}
-    <!-- {{img_obj1}} = {{img_obj}} -->
-    <!-- <h3>Uploaded_Image : {{img_obj1.image.url}}</h3> -->
-    <!-- <p> {{ img_obj.image.url}} </p>  -->
-    <!-- <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px"> -->
-    <!-- {% endif %} -->
-
-    <!-- <% import os %>
-    <% from BTP.settings import MEDIA_DIR, MEDIA_ROOT %>
-    <% from datetime import datetime %>
-    <% dirname = datetime.now().strftime('%Y.%m.%d.%H.%M.%S') #2010.08.09.12.08.45  %>
-    <% os.mkdir(os.path.join(MEDIA_ROOT, dirname)) %> -->
+    <br/>
+    <br/>
 
     <script>
-       const fs = require('fs');
+        // image preview
+        var loadFile = function(event) {
+            var preview_img = document.getElementById('preview_img');
+            var original_image = document.getElementById('original-heading');
+            original_image.style.display = "block";
+            preview_img.src = URL.createObjectURL(event.target.files[0]);
+            preview_img.onload = function() {
+                URL.revokeObjectURL(preview_img.src) // free memory
+            }
+        };
 
-        if(document.getElementById('button').clicked == true){
-            fs.copyFile( 'img_obj.image.url', 'output_folder', (err) => {
-                if (err) throw err;
-                console.log('File was copied to destination');
-            });
-            // <img src = "{{ img_obj.image.url }}" alt="connect" style="max-height:300px"/>
-        }
+
+        // function removeFiles(){
+        //     console.log(fs);
+            // var media_dir = document.getElementById('media_dir').value;
+            // media_dir = media_dir.slice(0,media_dir.length-7).replace(/\\/g,'/');
+            // var original_image = document.getElementById('original_image').alt;
+            // var predicted_image = document.getElementById('predicted_image').alt;
+            // orig_path = media_dir + original_image;
+            // pred_path = media_dir + predicted_image;
+            // fs.unlinksync(orig_path);
+            // fs.unlinksync(pred_path);
+        // }
+
+
+
+        // if(document.getElementById('button').clicked == true){
+        //     fs.copyFile( 'img_obj.image.url', 'output_folder', (err) => {
+        //         if (err) throw err;
+        //         console.log('File was copied to destination');
+        //     });
+        // }
+
+
     </script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
