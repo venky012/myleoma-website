@@ -59,19 +59,19 @@ def image_upload_view(request):
     return render(request, 'Home.html', {'form': form})
 
 
-def index(request):
-    dir = MEDIA_ROOT + '/folder-2'
-    output_folder = os.mkdir(dir)
-    if request.method == 'POST':
-        form = UploadForm(request.FILES)
-        if form.is_valid():
-            form.save()
-            img_obj_1 = form.instance
-            if path.exists("img_obj_1.image"):
-                src = path.realpath("img_obj.image")
-                shutil.copy2(src , output_folder)
-                context =  {'form': form, 'img_obj_1': img_obj_1 }
-                return render(request, 'Home.html',context)
-        else:
-            form = UploadForm()
-        return render(request, 'Home.html', {'form': form})
+# def index(request):
+#     dir = MEDIA_ROOT + '/folder-2'
+#     output_folder = os.mkdir(dir)
+#     if request.method == 'POST':
+#         form = UploadForm(request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             img_obj_1 = form.instance
+#             if path.exists("img_obj_1.image"):
+#                 src = path.realpath("img_obj.image")
+#                 shutil.copy2(src , output_folder)
+#                 context =  {'form': form, 'img_obj_1': img_obj_1 }
+#                 return render(request, 'Home.html',context)
+#         else:
+#             form = UploadForm()
+#         return render(request, 'Home.html', {'form': form})

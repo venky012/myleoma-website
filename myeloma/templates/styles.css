@@ -1,0 +1,18 @@
+body {
+    background-size: 100%; 
+    background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
+}
+
+.image-div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.images{
+    /* border:1px solid black; */
+    flex-basis: 20%;
+    margin:50px;
+}
+
+
+/* loadFile(event) */

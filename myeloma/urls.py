@@ -8,7 +8,7 @@ urlpatterns = [
     # path('', image_request, name = "image-request")  
     # path('admin/', admin.site.urls),
     path('', views.image_upload_view, name = 'home'),
-    path('', views.index, name = "home"),
+    # path('', views.index, name = "home"),
 ]
 
 
